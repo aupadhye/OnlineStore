@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:security="http://www.springframework.org/schema/security"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans     http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/security  http://www.springframework.org/schema/security/spring-security-3.2.xsd">
+
+    <!-- Security conf -->
+    <security:http use-expressions="true" authentication-manager-ref="authenticationManager"
+                   entry-point-ref="authEntryPoint">
+
+        <security:intercept-url pattern="/login/**" access="permitAll"/>
+
+        <security:intercept-url pattern="/rest/test" access="permitAll"/>
+        <security:intercept-url pattern="/rest/store/items/search" access="hasAnyRole('SearchItem')"/>
+        <security:intercept-url pattern="/rest/store/items/" access="hasAnyRole('GetItemDetails')"/>
+        <security:intercept-url pattern="/rest/cart/checkout" method="POST" access="hasAnyRole('Checkout')"/>
+        <security:intercept-url pattern="/rest/cart/items" method="POST" access="hasAnyRole('AddItemToCart')"/>
+        <security:intercept-url pattern="/rest/**" method="GET" access="isFullyAuthenticated()"/>
+
+        <security:form-login login-page="/login/login.html"
+        username-parameter="username"
+        password-parameter="password"
+        login-processing-url="/login/login"
+        authentication-success-handler-ref="authSuccessHandler"/>
+
+        <security:logout logout-url="/sm-ng/logout"
+                         invalidate-session="true"
+                         success-handler-ref="logoutSuccessHandler"
+                         delete-cookies="JSESSIONID"/>
+
+        <security:http-basic/>
+        <security:headers/>
+    </security:http>
+
+    <security:authentication-manager id="authenticationManager">
+        <security:authentication-provider ref="authenticationProvider"/>
+    </security:authentication-manager>
+
+    <bean id="logoutSuccessHandler"
+          class="org.springframework.security.web.authentication.logout.SimpleUrlLogoutSuccessHandler">
+        <property name="defaultTargetUrl" value="/landing_page/login.jsp"/>
+        <property name="targetUrlParameter" value="redirect_uri"/>
+        <property name="redirectStrategy" ref="redirectStrategy"/>
+    </bean>
+
+    <bean id="redirectStrategy" class="org.springframework.security.web.DefaultRedirectStrategy">
+        <property name="contextRelative" value="true"/>
+    </bean>
+
+    <security:global-method-security pre-post-annotations="enabled">
+        <security:expression-handler ref="expressionHandler"/>
+    </security:global-method-security>
+
+</beans>
