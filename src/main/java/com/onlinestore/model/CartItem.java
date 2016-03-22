@@ -8,9 +8,19 @@ import com.onlinestore.util.Money;
  */
 public class CartItem extends Item {
 
+    private int id;
+
     private String category;
-    private float  tax;
-    private Money  priceAfterTax;
+    private float tax;
+    private Money priceAfterTax;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getCategory() {
         return category;

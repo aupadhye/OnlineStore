@@ -13,6 +13,31 @@ import java.util.List;
  */
 public class Cart {
 
+    private int id;
     private List<CartItem> items;
-    private Money totalPrice;
+    private Money total;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public List<CartItem> getItems() {
+        return items;
+    }
+
+    public void setItems(List<CartItem> items) {
+        this.items = items;
+    }
+
+    public Money getTotal() {
+        return total;
+    }
+
+    public void setTotal(Money total) {
+        this.total = total;
+    }
 }

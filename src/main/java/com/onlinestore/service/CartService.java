@@ -10,7 +10,7 @@ public interface CartService {
 
     Cart getCart(String userName);
 
-    boolean addCartItem(String userName, String itemCode);
+    void addCartItem(String userName, String itemCode);
 
-    boolean checkout(String userName);
+    void checkout(String userName);
 }

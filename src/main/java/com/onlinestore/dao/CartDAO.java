@@ -1,10 +1,7 @@
 package com.onlinestore.dao;
 
-import java.util.List;
-
+import com.onlinestore.dao.model.CartItemDO;
 import com.onlinestore.model.Cart;
-import com.onlinestore.model.Item;
-import com.onlinestore.model.ItemDetail;
 import org.springframework.stereotype.Component;
 
 /**
@@ -16,9 +13,11 @@ public interface CartDAO {
 
     Cart getCart(String userName);
 
+//    Cart getCartItems(String userName);
+
     void createCart(String userName, Cart cart);
 
-    boolean addItemToCart(String userName, Item item);
+    void addItemToCart(CartItemDO cartItemDO);
 
     boolean clearCart(String userName);
 

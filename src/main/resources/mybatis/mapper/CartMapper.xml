@@ -5,8 +5,33 @@
 
 <mapper namespace="com.onlinestore.dao.CartDAO">
 
-    <select id="getCart" resultType="com.onlinestore.model.Cart">
-        select code, price from items where search like %description%
+    <resultMap id="cartMap" type="com.onlinestore.model.Cart">
+        <result property="id" column="cart_id"/>
+        <collection property="items" ofType="com.onlinestore.model.CartItem">
+            <id property="id" column="cartItem_id"/>
+            <result property="code" column="code"/>
+            <result property="category" column="category"/>
+            <association property="price" javaType="com.onlinestore.util.Money">
+                <constructor>
+                    <arg javaType="float" column="price"/>
+                </constructor>
+            </association>
+        </collection>
+    </resultMap>
+
+    <select id="getCart" resultMap="cartMap">
+        select c.id cart_id, ci.id cartItem_id, i.code, i.price, i.category
+        from
+        Users u
+        join Carts c on u.cartFk = c.id
+        left join CartItems ci on ci.cartFk = c.id
+        left join Items i on ci.itemFk = i.id
+        where
+        u.name = #{userName}
     </select>
+
+    <insert id="addItemToCart">
+        insert into CartItems (cartFk, itemFk) values ((select cartFK from users where name = #{userName}), (select id from Items where code = #{itemCode}))
+    </insert>
 
 </mapper>

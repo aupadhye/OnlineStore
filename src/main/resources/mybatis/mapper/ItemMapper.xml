@@ -5,12 +5,31 @@
 
 <mapper namespace="com.onlinestore.dao.ItemDAO">
 
-    <select id="getItems" parameterType="String" resultType="com.onlinestore.model.Item">
+    <resultMap id="items" type="com.onlinestore.model.Item">
+        <result property="code" column="code"/>
+        <association property="price" javaType="com.onlinestore.util.Money">
+            <constructor>
+                <arg javaType="float" column="price"/>
+            </constructor>
+        </association>
+    </resultMap>
+
+    <resultMap id="itemDetail" type="com.onlinestore.model.ItemDetail">
+        <result property="code" column="code"/>
+        <result property="description" column="description"/>
+        <association property="price" javaType="com.onlinestore.util.Money">
+            <constructor>
+                <arg javaType="float" column="price"/>
+            </constructor>
+        </association>
+    </resultMap>
+
+    <select id="getItems" parameterType="String" resultMap="items">
         select code, price from items where description like #{criteria}
     </select>
 
 
-    <select id="getItem" parameterType="String" resultType="com.onlinestore.model.ItemDetail">
+    <select id="getItem" parameterType="String" resultMap="itemDetail">
         select code, description, price from items where code = #{code}
     </select>
 

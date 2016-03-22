@@ -14,6 +14,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.onlinestore.model.Item;
 import com.onlinestore.model.ItemDetail;
 
+/**
+ * Controller to only expose service as REST API.
+ */
 @Controller
 @RequestMapping("/rest")
 public class StoreRestAPIController {

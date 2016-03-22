@@ -1,9 +1,15 @@
 package com.onlinestore.service.impl;
 
+import com.onlinestore.dao.CartDAO;
+import com.onlinestore.dao.model.CartItemDO;
+import com.onlinestore.model.Cart;
+import com.onlinestore.model.CartItem;
+import com.onlinestore.service.CartService;
+import com.onlinestore.util.Money;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.onlinestore.model.Cart;
-import com.onlinestore.service.CartService;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA. User: Administrator Date: 3/18/16 Time: 3:53 PM To change this template use File | Settings | File
@@ -12,18 +18,51 @@ import com.onlinestore.service.CartService;
 @Component
 public class CartServiceImpl implements CartService {
 
+    @Autowired
+    private CartDAO cartDAO;
+
     @Override
     public Cart getCart(String userName) {
-        return null; // To change body of implemented methods use File | Settings | File Templates.
+        Cart cart = cartDAO.getCart(userName);
+        if (cart == null) {
+            throw new RuntimeException("Cart cannot be null!");
+        }
+        Money total = new Money(0f);
+        List<CartItem> items = cart.getItems();
+        for (CartItem cartItem : items) {
+            String category = cartItem.getCategory();
+            float tax = getTaxByCategory(category);
+            Money priceAfterTax = cartItem.getPrice().multiply(1 + tax);
+            cartItem.setPriceAfterTax(priceAfterTax);
+            total.add(priceAfterTax);
+        }
+        cart.setTotal(total);
+        return cart;
     }
 
     @Override
-    public boolean addCartItem(String userName, String itemCode) {
-        return false; // To change body of implemented methods use File | Settings | File Templates.
+    public void addCartItem(String userName, String itemCode) {
+        cartDAO.addItemToCart(new CartItemDO(userName, itemCode));
     }
 
     @Override
-    public boolean checkout(String userName) {
-        return false; // To change body of implemented methods use File | Settings | File Templates.
+    public void checkout(String userName) {
+
+        // ... checkout code
+
+        cartDAO.clearCart(userName);
+    }
+
+    private static float getTaxByCategory(String category){
+        if("A".equals(category)) {
+            return 0.10f;
+        }
+        else if("B".equals(category)) {
+            return 0.20f;
+        }
+        else if("C".equals(category)) {
+            return 0.00f;
+        }
+        throw new RuntimeException("Category not supported! " + category);
     }
 }
