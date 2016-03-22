@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.onlinestore.dao.ItemDAO">
+
+    <select id="getItems" parameterType="String" resultType="com.onlinestore.model.Item">
+        select code, price from items where description like #{criteria}
+    </select>
+
+
+    <select id="getItem" parameterType="String" resultType="com.onlinestore.model.ItemDetail">
+        select code, description, price from items where code = #{code}
+    </select>
+
+</mapper>
