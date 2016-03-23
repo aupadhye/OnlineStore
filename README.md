@@ -22,5 +22,11 @@ Unit tests can be added at every layer to test them in isolation and to be imple
 
 Please check test classes of controllers for REST API usage.
 
+To execute test cases,
+1. Make sure maven is installed and configured correctly
+2. Download code zip and unzip at some location
+3. Go to that folder and execute
+mvn test
+
 
 
