@@ -5,8 +5,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 
 /**
- * Created with IntelliJ IDEA. User: Administrator Date: 3/18/16 Time: 11:00 AM To change this template use File | Settings | File
- * Templates.
+ * Util class to wrap Money functionality
  */
 public class Money implements Serializable {
 
@@ -36,11 +35,6 @@ public class Money implements Serializable {
         this.amount = amount;
         this.amount = this.amount.setScale(2, RoundingMode.CEILING);
     }
-
-//    public void setAmount(String amount) {
-//        this.amount = new BigDecimal(amount);
-//        this.amount = this.amount.setScale(2, RoundingMode.CEILING);
-//    }
 
     public Money add(Money other) {
         return new Money(amount.add(other.amount));
