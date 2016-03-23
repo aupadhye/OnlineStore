@@ -1,6 +1,8 @@
 package com.onlinestore.web.controller;
 
 import com.onlinestore.BaseTest;
+import com.onlinestore.model.Cart;
+import com.onlinestore.model.CartItem;
 import com.onlinestore.model.Item;
 import com.onlinestore.model.ItemDetail;
 import com.onlinestore.util.Money;
@@ -49,14 +51,26 @@ public class RestAPITests extends BaseTest {
 
     @Test
     public void testAddItemCart() throws Exception {
-        String result = callPost("/rest/cart");
+        String result = callPost("/rest/cart/items/Book250");
         Assert.assertEquals("", result);
     }
 
     @Test
     public void testGetCart() throws Exception {
+
+        callPost("/rest/cart/items/Book123");
+
         String result = callGet("/rest/cart");
-        Assert.assertEquals("", result);
+        Cart actual = getObjectFromJSon(result, Cart.class);
+
+        Cart expected = new Cart();
+        expected.setId(1);
+        List<CartItem> items = new ArrayList<CartItem>(2);
+        items.add(new CartItem("Book123", new Money(100.00f), 2, "A", 10f, new Money(110.01f)));
+        expected.setItems(items);
+        expected.setTotal(new Money(110.01f));
+
+        Assert.assertThat(actual, is(expected));
     }
 
     // Helper methods

@@ -33,15 +33,15 @@ public class ItemDAOTests extends BaseTest {
 
     @Test
     public void testAddItemToCart() throws Exception {
-        cartDAO.addItemToCart(new CartItemDO("arun", "Book123"));
+        cartDAO.addItemToCart(new CartItemDO("ganesh", "Book123"));
     }
 
     @Test
     public void testGetCart() throws Exception {
 
-        cartDAO.addItemToCart(new CartItemDO("arun", "Book123"));
-        Cart cart = cartDAO.getCart("arun");
-        Assert.assertEquals(1, cart.getId());
+        cartDAO.addItemToCart(new CartItemDO("ganesh", "Book123"));
+        Cart cart = cartDAO.getCart("ganesh");
+        Assert.assertEquals(2, cart.getId());
         Assert.assertNotNull(cart.getItems());
         Assert.assertEquals(1, cart.getItems().size());
         Assert.assertEquals("Book123", cart.getItems().get(0).getCode());

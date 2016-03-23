@@ -32,9 +32,10 @@ public class CartServiceImpl implements CartService {
         for (CartItem cartItem : items) {
             String category = cartItem.getCategory();
             float tax = getTaxByCategory(category);
-            Money priceAfterTax = cartItem.getPrice().multiply(1 + tax);
+            cartItem.setTax(tax);
+            Money priceAfterTax = cartItem.getPrice().multiply(1 + tax/100);
             cartItem.setPriceAfterTax(priceAfterTax);
-            total.add(priceAfterTax);
+            total = total.add(priceAfterTax);
         }
         cart.setTotal(total);
         return cart;
@@ -55,13 +56,13 @@ public class CartServiceImpl implements CartService {
 
     private static float getTaxByCategory(String category){
         if("A".equals(category)) {
-            return 0.10f;
+            return 10f;
         }
         else if("B".equals(category)) {
-            return 0.20f;
+            return 20f;
         }
         else if("C".equals(category)) {
-            return 0.00f;
+            return 0f;
         }
         throw new RuntimeException("Category not supported! " + category);
     }

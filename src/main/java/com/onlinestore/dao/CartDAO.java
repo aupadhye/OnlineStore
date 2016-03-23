@@ -13,10 +13,6 @@ public interface CartDAO {
 
     Cart getCart(String userName);
 
-//    Cart getCartItems(String userName);
-
-    void createCart(String userName, Cart cart);
-
     void addItemToCart(CartItemDO cartItemDO);
 
     boolean clearCart(String userName);

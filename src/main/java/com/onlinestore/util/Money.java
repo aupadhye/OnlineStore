@@ -18,7 +18,7 @@ public class Money implements Serializable {
     }
 
     public Money(Float amount) {
-        this.amount = new BigDecimal(amount).setScale(2, RoundingMode.CEILING);
+        this.amount = new BigDecimal(amount).setScale(2, RoundingMode.HALF_UP);
     }
 
     public Money(BigDecimal amount) {
@@ -43,7 +43,7 @@ public class Money implements Serializable {
 //    }
 
     public Money add(Money other) {
-        return null;
+        return new Money(amount.add(other.amount));
     }
 
     public Money multiply(int other) {

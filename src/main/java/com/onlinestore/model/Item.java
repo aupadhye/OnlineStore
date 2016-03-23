@@ -2,11 +2,13 @@ package com.onlinestore.model;
 
 import com.onlinestore.util.Money;
 
+import java.io.Serializable;
+
 /**
  * Created with IntelliJ IDEA. User: Administrator Date: 3/18/16 Time: 10:02 AM To change this template use File | Settings | File
  * Templates.
  */
-public class Item {
+public class Item implements Serializable {
 
     private String code;
     private Money  price;
